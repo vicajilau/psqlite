@@ -1,5 +1,5 @@
 name: psqlite
-description: A new Flutter package project.
+description: A wrapper to work with SQLite databases in a simpler, more intuitive and scalable way for any Flutter project.
 version: 1.0.0
 homepage: https://github.com/vicajilau/psqlite
 
