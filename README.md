@@ -1,4 +1,4 @@
-# psqlite
+# PSQlite
 
 [![pub package](https://img.shields.io/pub/v/sqflite.svg)](https://pub.dev/packages/psqlite)
 
