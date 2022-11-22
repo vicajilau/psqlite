@@ -2,7 +2,12 @@
 
 [![pub package](https://img.shields.io/pub/v/sqflite.svg)](https://pub.dev/packages/psqlite)
 
-Easily manipulate sqlite databases in Dart using this package.
+Easily manipulate sqlite databases in Dart using this package. The designed objects structure is as follows:
+* [TableDb][]: Defines a table in a database. It consists of a collection of ColumnDb objects and a table name.
+* [ColumnDb][]: Defines a column of a database table. A TableDb object will be made up of a collection of ColumnDb objects.
+* [FieldTypeDb][]: Defines the type of the value of a column of a table in a database. SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
+* [ObjectStored][]: All objects that intend to be stored in SQLite databases should extend the ObjectStored class.
+* [PSQLite][]: Encapsulates a database that is made up of a TableDb and a database name.
 
 ## Usage example
 
@@ -187,3 +192,9 @@ You can delete ALL users:
 final storageService = UserStorageService.init();
 await storageService.removeAll();
 ```
+
+[TableDb]: https://github.com/vicajilau/psqlite/blob/main/lib/src/table_db.dart
+[ColumnDb]: https://github.com/vicajilau/psqlite/blob/main/lib/src/column_db.dart
+[FieldTypeDb]: https://github.com/vicajilau/psqlite/blob/main/lib/src/field_type_db.dart
+[ObjectStored]: https://github.com/vicajilau/psqlite/blob/main/lib/src/object_stored.dart
+[PSQLite]: https://github.com/vicajilau/psqlite/blob/main/lib/src/psqlite.dart
