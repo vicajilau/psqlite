@@ -7,20 +7,20 @@ import '../psqlite.dart';
 
 /// Encapsulates a database that is made up of a [_table] and a [_dbName].
 class PSQLite {
-  /// The [name] of the database. This will be used as the file name.
-  final String _dbName;
+  /// The name of the database. This will be used as the file name.
+  String _dbName;
 
   /// The [_table] of the database. It will be used for the creation, update and remove of the database.
-  final TableDb _table;
+  TableDb _table;
 
   /// Set the version. This executes the onCreate function and provides a path to perform database upgrades and downgrades.
-  final int _version;
+  int _version;
 
   /// The encapsulation database (The database itself).
   Database? _database;
 
   /// Used to create unit tests. Defaults to false.
-  final bool _isMocked;
+  bool _isMocked;
 
   /// Build the necessary database using lazy programming.
   Future<Database> _getDatabase() async {
@@ -31,8 +31,27 @@ class PSQLite {
   }
 
   TableDb getTable() => _table;
+  void setTable(TableDb table) => _table = table;
+
   int getVersion() => _version;
+
+  /// Set the version of the database.
+  void setVersion(int version) => _version = version;
+
+  /// Indicates if the database should is mocked.
   bool getIsMocked() => _isMocked;
+
+  /// Set if the database should be mocked in memory or real.
+  void setMocked(bool mocked) {
+    _isMocked = mocked;
+    _database = null; // This forces the instance to be reinitialized properly.
+  }
+
+  /// Get the database name.
+  String getDbName() => _dbName;
+
+  /// Modify the name of the database.
+  void setDbName(String name) => _dbName = name;
 
   /// Constructor for the database.
   PSQLite({required TableDb table, int version = 1, bool isMocked = false})
