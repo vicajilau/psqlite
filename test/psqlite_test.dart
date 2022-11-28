@@ -16,13 +16,26 @@ Future main() async {
     storageService = UserStorageService.init(mockedDatabase: true);
   });
 
+  setUp(() async {
+    await storageService.removeAll();
+  });
+
+  test('Database name', () {
+    const oldName = "users";
+    const newName = "users2";
+    storageService.getDatabase().setDbName(newName);
+    expect(storageService.getDatabase().getDbName(), newName);
+    storageService.getDatabase().setDbName(oldName);
+    expect(storageService.getDatabase().getDbName(), oldName);
+  });
+
   test('initialize constructor', () async {
     final users = await storageService.getListOfUsers();
     expect(users.length, 0);
   });
 
   test('Add a user', () async {
-    final newUser = User("1", "Liam", "Neeson");
+    final newUser = User("1", "Liam", "Neeson", 12);
     await storageService.addUser(newUser);
     final storedUser = await storageService.getUser("1");
     expect(newUser, storedUser);
@@ -34,13 +47,15 @@ Future main() async {
   });
 
   test('Get single stored stored user', () async {
+    final newUser = User("1", "Liam", "Neeson", 12);
+    await storageService.addUser(newUser);
     final storedUser = await storageService.getUser("1");
-    final user = User("1", "Liam", "Neeson");
+    final user = User("1", "Liam", "Neeson", 12);
     expect(storedUser, user);
   });
 
   test('Update a stored user', () async {
-    final newUser = User("1", "Liam", "Neeson");
+    final newUser = User("1", "Liam", "Neeson", 12);
     const updatedLastName = 'Carreras';
     const finalLastName = 'Neeson';
 
@@ -60,13 +75,15 @@ Future main() async {
   });
 
   test('Get a list of stored stored user', () async {
+    final newUser = User("1", "Liam", "Neeson", 12);
+    await storageService.addUser(newUser);
     final storedUser = await storageService.getListOfUsers();
-    final user = [User("1", "Liam", "Neeson")];
+    final user = [User("1", "Liam", "Neeson", 12)];
     expect(storedUser, user);
   });
 
   test('Remove a user', () async {
-    final user = User("1", "Liam", "Neeson");
+    final user = User("1", "Liam", "Neeson", 12);
     await storageService.removeUser(user);
     final storedUser = await storageService.getUser("1");
     expect(storedUser, null);
@@ -75,7 +92,7 @@ Future main() async {
   });
 
   test('Remove a table', () async {
-    final user = User("1", "Liam", "Neeson");
+    final user = User("1", "Liam", "Neeson", 12);
     await storageService.addUser(user);
     final storedUser = await storageService.getUser("1");
     expect(storedUser, user);

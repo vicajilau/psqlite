@@ -1,3 +1,5 @@
+import 'package:psqlite/src/iterable_extension.dart';
+
 import 'column_db.dart';
 
 /// Defines a table in a database.
@@ -12,13 +14,25 @@ class TableDb {
   /// Create a table with a [name] and a list of empty columns.
   TableDb(this._name) : _columns = [];
 
+  /// Check if a list of column has unique names.
+  static bool areUniqueColumnNames(List<ColumnDb> columns) =>
+      columns.toSet().length == columns.length;
+
   /// Create a table with a [name] and a list of [columns].
   TableDb.create({required String name, required List<ColumnDb> columns})
       : _name = name,
-        _columns = columns;
+        _columns = columns,
+        assert(areUniqueColumnNames(columns));
 
   /// Add a [columnDb] in the column list.
-  void addColumn(ColumnDb columnDb) => _columns.add(columnDb);
+  /// Throw a exception if the name of the column already exist.
+  void addColumn(ColumnDb columnDb) {
+    if (!_columns.contains(columnDb)) {
+      _columns.add(columnDb);
+    } else {
+      throw Exception('Column already exist in the table. $columnDb');
+    }
+  }
 
   /// Replace a [newColumn] with the first column that satisfy [whereFunction].
   void replaceColumn(
@@ -35,48 +49,56 @@ class TableDb {
       _columns.removeWhere(whereFunction);
 
   /// Remove the [column] passed.
-  void removeColumn(ColumnDb column) => _columns.remove(column);
+  bool removeColumn(ColumnDb column) => _columns.remove(column);
 
   /// Return all columns from this table.
   List<ColumnDb> getColumns() => _columns;
   String getName() => _name;
 
   /// Check if the table make no sense.
-  bool isInconsistentTable() {
-    int numberOfPrimaryKeys = 0;
-    bool thereIsEmptyColumnName = false;
-    for (var element in _columns) {
-      if (element.isPrimaryKey) {
-        numberOfPrimaryKeys++;
-      }
-      if (element.fieldName.isEmpty) {
-        thereIsEmptyColumnName = true;
-      }
+  void checkInconsistentTable() {
+    if (_columns.countWhere((column) => column.getName().isEmpty) > 0) {
+      throw Exception(
+          'Table $_name has inconsistencies. There is/are empty column names.');
+    } else if (_columns.countWhere((column) => column.isPrimaryKey()) == 0) {
+      throw Exception(
+          'Table $_name has inconsistencies. There is no any primary key column.');
+    } else if (_columns.countWhere((column) => column.isPrimaryKey()) > 1) {
+      throw Exception(
+          'Table $_name has inconsistencies. There are multiple primary keys columns.');
     }
-    return numberOfPrimaryKeys != 1 || thereIsEmptyColumnName;
   }
 
   /// Return the primary key column of the table.
   ColumnDb getPrimaryColumn() =>
-      _columns.firstWhere((element) => element.isPrimaryKey);
+      _columns.firstWhere((column) => column.isPrimaryKey());
 
   /// Return the to create this table based on the columns it currently has.
   String getCreateDbRequest() {
-    if (!isInconsistentTable()) {
-      String query = 'CREATE TABLE $_name(';
-      for (int i = 0; i < _columns.length; i++) {
-        final column = _columns[i];
-        query += column.toString();
-        if (i != _columns.length - 1) {
-          query += ', ';
-        } else {
-          query += ')';
-        }
+    checkInconsistentTable();
+    String query = 'CREATE TABLE $_name(';
+    for (int i = 0; i < _columns.length; i++) {
+      final column = _columns[i];
+      query += column.toString();
+      if (i != _columns.length - 1) {
+        query += ', ';
+      } else {
+        query += ')';
       }
-      return query;
-    } else {
-      throw Exception(
-          'Table $_name has inconsistencies (empty names, multiples primary keys or none');
+    }
+    return query;
+  }
+
+  /// Return if there is a column with that name.
+  bool existColumnWith(String name) {
+    try {
+      _columns.firstWhere((column) => column.getName() == name);
+      return true;
+    } catch (error) {
+      return false;
     }
   }
+
+  @override
+  String toString() => 'TableDb{_name: $_name, _columns: $_columns}';
 }

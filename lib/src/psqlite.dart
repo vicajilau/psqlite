@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:path/path.dart';
+import 'package:psqlite/src/filter_db.dart';
+import 'package:psqlite/src/condition_db.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../psqlite.dart';
@@ -105,10 +107,12 @@ class PSQLite {
   Future<Map<String, dynamic>?> getElementBy(String primaryKey) async {
     // Query the table for all The Elements.
     final db = await _getDatabase();
-    final response = await db.query(_table.getName(),
-        where: '${_table.getPrimaryColumn().fieldName} = ?',
-        // Prevent SQL injection.
-        whereArgs: [primaryKey]);
+    final filter = FilterDb(
+        _table.getPrimaryColumn().getName(), primaryKey, ConditionDb.equal);
+    final response =
+        await db.query(_table.getName(), where: filter.getSqlWhere(),
+            // Prevent SQL injection.
+            whereArgs: [primaryKey]);
     if (response.isEmpty) {
       return null;
     } else {
@@ -116,46 +120,45 @@ class PSQLite {
     }
   }
 
-  List<dynamic>? _getWhereFilters(Map<ColumnDb, dynamic>? filters) {
+  List<dynamic>? _getWhereFilters(List<FilterDb>? filters) {
     if (filters == null || filters.isEmpty) {
       return null;
     }
     List<dynamic> result = [];
-    filters.values.map((e) {
-      result.add(e.fieldName);
-    });
+
+    for (int i = 0; i < filters.length; i++) {
+      final value = filters[i].getValue();
+      result.add(value);
+    }
     return result;
   }
 
-  String? _getWhereSentence(Map<ColumnDb, dynamic>? filters) {
+  String? _getWhereSentence(List<FilterDb>? filters) {
+    String sentence = '';
     if (filters == null || filters.isEmpty) {
       return null;
     }
-
-    String sentence = '';
-
     for (int i = 0; i < filters.length; i++) {
-      final value = filters[i];
-
-      sentence += '$value = ?';
-
+      if (!_table.existColumnWith(filters[i].getField())) {
+        throw Exception('The ${filters[i].getField()} does not exist.');
+      }
+      sentence += filters[i].getSqlWhere();
       if (i != filters.length - 1) {
         sentence += ' AND ';
       }
     }
-
     return sentence;
   }
 
   /// A method that retrieves all the objects from the current table.
   Future<List<Map<String, dynamic>>> getElementsWhere(
-      Map<ColumnDb, dynamic>? filters) async {
+      List<FilterDb>? filter) async {
     // Query the table for all The Elements.
     final db = await _getDatabase();
     final response = await db.query(_table.getName(),
-        where: _getWhereSentence(filters),
+        where: _getWhereSentence(filter),
         // Prevent SQL injection.
-        whereArgs: _getWhereFilters(filters));
+        whereArgs: _getWhereFilters(filter));
     if (response.isEmpty) {
       return [];
     } else {
@@ -166,10 +169,12 @@ class PSQLite {
   /// Update the given object in the current table.
   Future<void> updateElement(ObjectStored object) async {
     final db = await _getDatabase();
+    final filter = FilterDb(_table.getPrimaryColumn().getName(),
+        object.getPrimaryKey(), ConditionDb.equal);
     await db.update(
       _table.getName(),
       object.toMap(),
-      where: '${_table.getPrimaryColumn().fieldName} = ?',
+      where: filter.getSqlWhere(),
       // Prevent SQL injection.
       whereArgs: [object.getPrimaryKey()],
     );
@@ -178,9 +183,11 @@ class PSQLite {
   /// Remove the given object in the current table.
   Future<void> deleteElement(ObjectStored object) async {
     final db = await _getDatabase();
+    final filter = FilterDb(_table.getPrimaryColumn().getName(),
+        object.getPrimaryKey(), ConditionDb.equal);
     await db.delete(
       _table.getName(),
-      where: '${_table.getPrimaryColumn().fieldName} = ?',
+      where: filter.getSqlWhere(),
       // Prevent SQL injection.
       whereArgs: [object.getPrimaryKey()],
     );
