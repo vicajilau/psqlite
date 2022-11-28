@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:path/path.dart';
-import 'package:psqlite/src/filter_db.dart';
-import 'package:psqlite/src/condition_db.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../psqlite.dart';

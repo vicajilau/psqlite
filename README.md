@@ -8,6 +8,7 @@ Easily manipulate sqlite databases in Dart using this package. The designed obje
 * [FieldTypeDb][]: Defines the type of the value of a column of a table in a database. SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
 * [ObjectStored][]: All objects that intend to be stored in SQLite databases should extend the ObjectStored class.
 * [PSQLite][]: Encapsulates a database that is made up of a TableDb and a database name.
+* [PSQLite][]: Encapsulates a database that is made up of a TableDb and a database name.
 
 ## Usage example
 

@@ -1,5 +1,4 @@
 import 'package:psqlite/psqlite.dart';
-import 'package:psqlite/src/filter_db.dart';
 
 import 'user.dart';
 
