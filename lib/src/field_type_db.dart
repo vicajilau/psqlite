@@ -16,6 +16,7 @@ enum FieldTypeDb {
 }
 
 extension CustomFieldTypeDb on FieldTypeDb {
+  /// Return SQL column type related.
   String getName() {
     return name.toUpperCase();
   }
