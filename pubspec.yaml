@@ -1,6 +1,6 @@
 name: psqlite
-description: A wrapper to work with SQLite databases in a simpler, more intuitive and scalable way for any Flutter project.
-version: 2.0.0
+description: PSQLite is a wrapper to work with SQLite databases in a simpler, more intuitive and scalable way for any Flutter project.
+version: 2.0.1
 homepage: https://github.com/vicajilau/psqlite
 
 environment:
@@ -11,13 +11,13 @@ dependencies:
   flutter:
     sdk: flutter
   path: ^1.8.2
-  sqflite: ^2.2.0+3
+  sqflite: ^2.2.2
 
 dev_dependencies:
   sqflite_common_ffi:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
