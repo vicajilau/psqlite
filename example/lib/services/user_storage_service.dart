@@ -1,6 +1,6 @@
 import 'package:psqlite/psqlite.dart';
 
-import 'user.dart';
+import '../model/user.dart';
 
 enum UserColumnName { id, name, lastName, age }
 

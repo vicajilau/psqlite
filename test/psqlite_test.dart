@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-import 'example/user.dart';
-import 'example/user_storage_service.dart';
+import '../example/lib/model/user.dart';
+import '../example/lib/services/user_storage_service.dart';
 
 Future main() async {
   late UserStorageService storageService;
