@@ -1,3 +1,6 @@
+## 2.0.2
+* Example project added.
+
 ## 2.0.1
 * Update dependencies.
 * Optimized filters.
