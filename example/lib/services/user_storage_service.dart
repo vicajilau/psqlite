@@ -33,7 +33,7 @@ class UserStorageService {
     return await _database.updateElement(user);
   }
 
-  Future<void> removeUser(User user) async {
+  Future<bool> removeUser(User user) async {
     return await _database.deleteElement(user);
   }
 
@@ -49,8 +49,8 @@ class UserStorageService {
     return null;
   }
 
-  Future<List<User>> getListOfUsers() async {
-    final maps = await _database.getElements();
+  Future<List<User>> getListOfUsers({List<FilterDb> where = const []}) async {
+    final maps = await _database.getElements(where: where);
     return List.generate(maps.length, (i) {
       return User(
           maps[i][UserColumnName.id.name],
@@ -60,15 +60,8 @@ class UserStorageService {
     });
   }
 
-  Future<List<User>> getListOfUsersBy(List<FilterDb>? filters) async {
-    final maps = await _database.getElementsWhere(filters);
-    return List.generate(maps.length, (i) {
-      return User(
-          maps[i][UserColumnName.id.name],
-          maps[i][UserColumnName.name.name],
-          maps[i][UserColumnName.lastName.name],
-          maps[i][UserColumnName.age.name]);
-    });
+  Future<void> removeUsers(List<FilterDb> filters) async {
+    await _database.deleteElements(where: filters);
   }
 
   Future<void> removeAll() async {

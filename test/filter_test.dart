@@ -39,7 +39,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user1, user2];
     expect(storedUser, filteredUsers);
   });
@@ -57,7 +57,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user2];
     expect(storedUser, filteredUsers);
   });
@@ -74,7 +74,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user1];
     expect(storedUser, filteredUsers);
   });
@@ -91,7 +91,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user3];
     expect(storedUser, filteredUsers);
   });
@@ -108,7 +108,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user2, user3];
     expect(storedUser, filteredUsers);
   });
@@ -125,7 +125,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user1, user2];
     expect(storedUser, filteredUsers);
   });
@@ -142,7 +142,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [];
     expect(storedUser, filteredUsers);
   });
@@ -159,7 +159,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user1, user3];
     expect(storedUser, filteredUsers);
   });
@@ -167,7 +167,7 @@ Future main() async {
   test('Filtering a wrong column', () async {
     List<FilterDb> filters = [FilterDb('wrongName', 14, ConditionDb.equal)];
 
-    expect(storageService.getListOfUsersBy(filters),
+    expect(storageService.getListOfUsers(where: filters),
         throwsA(isInstanceOf<Exception>()));
   });
 
@@ -183,7 +183,7 @@ Future main() async {
     final user3 = User("3", "John", "Smith", 21);
     await storageService.addUser(user3);
 
-    final storedUser = await storageService.getListOfUsersBy(filters);
+    final storedUser = await storageService.getListOfUsers(where: filters);
     final filteredUsers = [user1, user2];
     expect(storedUser, filteredUsers);
   });

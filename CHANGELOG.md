@@ -1,3 +1,10 @@
+## 2.1.0
+* Dependencies updated. 
+* deleteElement method now returns a boolean on the success of the operation.
+* deleteElements method has been added to delete all elements that match the filter.
+* The getElementsWhere method has been renamed to getElements with a where parameter.
+* Unit Test updated.
+
 ## 2.0.2
 * Example project added.
 

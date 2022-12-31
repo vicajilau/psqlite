@@ -95,13 +95,6 @@ class PSQLite {
   }
 
   /// A method that retrieves all the objects from the current table.
-  Future<List<Map<String, dynamic>>> getElements() async {
-    // Query the table for all The Elements.
-    final db = await _getDatabase();
-    return await db.query(_table.getName());
-  }
-
-  /// A method that retrieves all the objects from the current table.
   Future<Map<String, dynamic>?> getElementBy(String primaryKey) async {
     // Query the table for all The Elements.
     final db = await _getDatabase();
@@ -148,15 +141,25 @@ class PSQLite {
     return sentence;
   }
 
-  /// A method that retrieves all the objects from the current table.
-  Future<List<Map<String, dynamic>>> getElementsWhere(
-      List<FilterDb>? filter) async {
+  /// Retrieves all elements from the table that match the list of filters.
+  /// An empty filter listing will return all the objects from the current table.
+  ///
+  /// [where] is the optional WHERE clause to apply when updating. Passing empty
+  /// will delete all rows.
+  ///
+  /// Returns all items matching the filters, or otherwise, all items in the table.
+  /// ```
+  ///  final allElements = await db.getElements();
+  ///  final minorElements = await db.getElements(where: [FilterDb('age', 18, ConditionDb.less)]);
+  /// ```
+  Future<List<Map<String, dynamic>>> getElements(
+      { List<FilterDb> where = const []}) async {
     // Query the table for all The Elements.
     final db = await _getDatabase();
     final response = await db.query(_table.getName(),
-        where: _getWhereSentence(filter),
+        where: _getWhereSentence(where),
         // Prevent SQL injection.
-        whereArgs: _getWhereFilters(filter));
+        whereArgs: _getWhereFilters(where));
     if (response.isEmpty) {
       return [];
     } else {
@@ -179,16 +182,37 @@ class PSQLite {
   }
 
   /// Remove the given object in the current table.
-  Future<void> deleteElement(ObjectStored object) async {
+  Future<bool> deleteElement(ObjectStored object) async {
     final db = await _getDatabase();
     final filter = FilterDb(_table.getPrimaryColumn().getName(),
         object.getPrimaryKey(), ConditionDb.equal);
-    await db.delete(
+    final numberOfElements = await db.delete(
       _table.getName(),
       where: filter.getSqlWhere(),
       // Prevent SQL injection.
       whereArgs: [object.getPrimaryKey()],
     );
+    return numberOfElements >= 1;
+  }
+
+  /// Removes all elements from the table that match the list of filters.
+  /// An empty filter listing will cause the table to be completely emptied.
+  ///
+  /// [where] is the optional WHERE clause to apply when updating. Passing empty
+  /// will delete all rows.
+  ///
+  /// Returns the number of rows affected.
+  /// ```
+  ///  int count = await db.deleteElements(where: [FilterDb('age', 18, ConditionDb.less)]);
+  /// ```
+  Future<int> deleteElements({List<FilterDb> where = const []}) async {
+    // Query the table for all The Elements.
+    final db = await _getDatabase();
+    final numberOfElements = await db.delete(_table.getName(),
+        where: _getWhereSentence(where),
+        // Prevent SQL injection.
+        whereArgs: _getWhereFilters(where));
+    return numberOfElements;
   }
 
   /// Remove all elements in the current table.
