@@ -119,14 +119,14 @@ class UserStorageService {
   PSQLite getDatabase() => _database;
 
   Future<void> addUser(User user) async {
-    return await _database.insertElement(user);
+    await _database.insertElement(user);
   }
 
   Future<void> updateUser(User user) async {
-    return await _database.updateElement(user);
+    await _database.updateElement(user);
   }
 
-  Future<void> removeUser(User user) async {
+  Future<bool> removeUser(User user) async {
     return await _database.deleteElement(user);
   }
 
@@ -142,8 +142,8 @@ class UserStorageService {
     return null;
   }
 
-  Future<List<User>> getListOfUsers() async {
-    final maps = await _database.getElements();
+  Future<List<User>> getListOfUsers({List<FilterDb> where = const []}) async {
+    final maps = await _database.getElements(where: where);
     return List.generate(maps.length, (i) {
       return User(
           maps[i][UserColumnName.id.name],
@@ -153,15 +153,8 @@ class UserStorageService {
     });
   }
 
-  Future<List<User>> getListOfUsersBy(List<FilterDb>? filters) async {
-    final maps = await _database.getElementsWhere(filters);
-    return List.generate(maps.length, (i) {
-      return User(
-          maps[i][UserColumnName.id.name],
-          maps[i][UserColumnName.name.name],
-          maps[i][UserColumnName.lastName.name],
-          maps[i][UserColumnName.age.name]);
-    });
+  Future<void> removeUsers(List<FilterDb> filters) async {
+    await _database.deleteElements(where: filters);
   }
 
   Future<void> removeAll() async {
@@ -219,7 +212,7 @@ List<FilterDb> filters = [
   FilterDb(UserColumnName.lastName.name, "Neeson", ConditionDb.equal),
   FilterDb(UserColumnName.age.name, 18, ConditionDb.greaterOrEqual)
 ];
-final filteredUsers = await storageService.getListOfUsersBy(filters);
+final filteredUsers = await storageService.getListOfUsers(where: filters);
 ```
 
 #### Remove a User stored in SQLite
@@ -231,10 +224,16 @@ await storageService.removeUser(user);
 ```
 
 #### Remove ALL Users stored in SQLite
-You can delete ALL users:
+You can delete ALL users in 2 different ways. Calling the removeAll method: 
 ```dart
 final storageService = UserStorageService.init();
 await storageService.removeAll();
+```
+Or calling the removeUsers method without filters param:
+
+```dart
+final storageService = UserStorageService.init();
+await storageService.removeUsers();
 ```
 
 [TableDb]: https://github.com/vicajilau/psqlite/blob/master/lib/src/table_db.dart

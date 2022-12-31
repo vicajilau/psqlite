@@ -1,3 +1,10 @@
+## 2.1.1
+* Documentation improved.
+* Readme improved.
+* Example project updated.
+* Coverage improved.
+* Minor bug fixes.
+
 ## 2.1.0
 * Dependencies updated. 
 * deleteElement method now returns a boolean on the success of the operation.

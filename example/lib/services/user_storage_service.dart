@@ -26,11 +26,11 @@ class UserStorageService {
   PSQLite getDatabase() => _database;
 
   Future<void> addUser(User user) async {
-    return await _database.insertElement(user);
+    await _database.insertElement(user);
   }
 
   Future<void> updateUser(User user) async {
-    return await _database.updateElement(user);
+    await _database.updateElement(user);
   }
 
   Future<bool> removeUser(User user) async {
