@@ -1,3 +1,9 @@
+## 2.1.2
+* Internal methods renamed.
+* Private methods moved in extensions.
+* Documentation improved more detailed.
+* Added code examples in documentation.
+
 ## 2.1.1
 * Documentation improved.
 * Readme improved.
