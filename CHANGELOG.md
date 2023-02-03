@@ -1,3 +1,7 @@
+## 2.1.3
+* Upgraded flutter.
+* Updated dependencies.
+
 ## 2.1.2
 * Internal methods renamed.
 * Private methods moved in extensions.
