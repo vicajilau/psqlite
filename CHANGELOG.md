@@ -1,3 +1,7 @@
+## 2.2.0
+* Upgraded to Dart 3.
+* Updated dependencies.
+
 ## 2.1.3
 * Upgraded flutter.
 * Updated dependencies.
