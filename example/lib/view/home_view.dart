@@ -31,6 +31,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text('PSQLite'),
         actions: [
           IconButton(
@@ -103,7 +104,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> registerUser() async {
-    Navigator.pop(context, 'add_user_dialog_manual_button');
     final user = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const RegisterView()));
     if (user != null) {
