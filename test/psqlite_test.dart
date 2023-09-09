@@ -5,7 +5,6 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import '../example/lib/model/user.dart';
 import '../example/lib/services/user_storage_service.dart';
 
-
 Future main() async {
   late UserStorageService storageService;
 
@@ -105,7 +104,7 @@ Future main() async {
   test('Remove users with filters', () async {
     final user1 = User("1", "Liam", "Neeson", 12);
     final user2 = User("2", "Mark", "Neeson", 13);
-    final user3= User("3", "John", "Neeson", 14);
+    final user3 = User("3", "John", "Neeson", 14);
     final user4 = User("4", "Amy", "Neeson", 18);
     final user5 = User("5", "Harald", "Neeson", 22);
     await storageService.addUser(user1);
@@ -122,7 +121,7 @@ Future main() async {
   test('Get users with filters', () async {
     final user1 = User("1", "Liam", "Neeson", 12);
     final user2 = User("2", "Mark", "Neeson", 13);
-    final user3= User("3", "John", "Neeson", 14);
+    final user3 = User("3", "John", "Neeson", 14);
     final user4 = User("4", "Amy", "Neeson", 18);
     final user5 = User("5", "Harald", "Neeson", 22);
 
@@ -135,12 +134,14 @@ Future main() async {
     List<User> listOfUsers = await storageService.getListOfUsers();
     expect(listOfUsers.length, 5);
 
-    final filters = [FilterDb(UserColumnName.age.name, 18, ConditionDb.greaterOrEqual)];
-    listOfUsers =  await storageService.getListOfUsers(where: filters);
+    final filters = [
+      FilterDb(UserColumnName.age.name, 18, ConditionDb.greaterOrEqual)
+    ];
+    listOfUsers = await storageService.getListOfUsers(where: filters);
     expect(listOfUsers.length, 2);
 
     final filters2 = [FilterDb(UserColumnName.age.name, 18, ConditionDb.less)];
-    listOfUsers =  await storageService.getListOfUsers(where: filters2);
+    listOfUsers = await storageService.getListOfUsers(where: filters2);
     expect(listOfUsers.length, 3);
   });
 }

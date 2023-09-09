@@ -63,11 +63,11 @@ class _HomeViewState extends State<HomeView> {
             },
             background: Container(
               color: Colors.red,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 30),
+              child: const Padding(
+                padding: EdgeInsets.only(right: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [
+                  children: [
                     Icon(
                       Icons.delete,
                       color: Colors.white,
