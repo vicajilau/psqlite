@@ -15,6 +15,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'PSQLite Example',
+      theme: ThemeData.light(useMaterial3: true).copyWith(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+      ),
       builder: EasyLoading.init(),
       home: const HomeView(),
     );
