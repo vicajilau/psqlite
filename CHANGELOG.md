@@ -1,3 +1,9 @@
+## 2.3.1
+
+* Upgraded to Dart 3 example project.
+* Upgraded dependencies in example project.
+* Updated dependencies in framework.
+
 ## 2.3.0
 
 * Upgraded to Dart 3 example project.
