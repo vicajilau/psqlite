@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class MyTextButton extends StatelessWidget {
   const MyTextButton({
-    Key? key,
+    super.key,
     required this.buttonName,
     required this.onTap,
     required this.bgColor,
     required this.textColor,
-  }) : super(key: key);
+  });
   final String buttonName;
   final VoidCallback onTap;
   final Color bgColor;
