@@ -5,7 +5,7 @@ import '../model/user.dart';
 class UserDetailView extends StatefulWidget {
   final User user;
 
-  const UserDetailView({Key? key, required this.user}) : super(key: key);
+  const UserDetailView({super.key, required this.user});
 
   @override
   State<UserDetailView> createState() => _UserDetailViewState();

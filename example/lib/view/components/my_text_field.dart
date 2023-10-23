@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
   const MyTextField(
-      {Key? key,
+      {super.key,
       required this.hintText,
       required this.inputType,
       required this.editingController,
       this.icon,
       this.labelText,
       this.readOnly,
-      this.onTap})
-      : super(key: key);
+      this.onTap});
   final String hintText;
   final TextInputType inputType;
   final TextEditingController editingController;
