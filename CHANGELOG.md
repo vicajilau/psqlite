@@ -1,3 +1,9 @@
+## 2.3.2
+
+* Updated Dependencies.
+* CI/CD added.
+* Dependabot configured.
+
 ## 2.3.1
 
 * Upgraded to Dart 3 example project.
