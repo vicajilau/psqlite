@@ -1,5 +1,3 @@
-library psqlite;
-
 export 'package:psqlite/src/column_db.dart';
 export 'package:psqlite/src/field_type_db.dart';
 export 'package:psqlite/src/object_stored.dart';
