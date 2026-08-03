@@ -31,7 +31,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_easyloading: ^3.0.5
+  flutter_easyloading: ^4.0.2
   psqlite:
     path: ../
 
